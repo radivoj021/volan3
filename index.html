@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Autoservis Volan, Novi Sad: redovan servis, dijagnostika, kočnice, trap, elektrika i klima servis.">
+<title>Autoservis Volan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,700;0,800;1,800;1,900&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky white header, dark photo hero with red diagonal, service cards overlapping the hero, then light sections */
+:root{
+  --red:#e3191f; --red-dark:#b90f14;
+  --ink:#141a21; --ink-2:#1f2731;
+  --text:#2b333d; --muted:#5d6672;
+  --bg:#f3f4f6; --card:#ffffff; --line:#e1e4e9;
+  --display:"Exo 2", "Arial Black", system-ui, sans-serif;
+  --body:"Barlow", "Segoe UI", Roboto, Arial, sans-serif;
+  --gut-l:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+  color-scheme:light;
+}
+*{box-sizing:border-box}img{max-width:100%}[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:#fff}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);color:var(--ink);text-wrap:balance;margin:0;line-height:1.05}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* Header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#fff;box-shadow:0 1px 0 var(--line)}
+.bar{display:flex;align-items:center;gap:24px;min-height:78px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.logo svg{width:52px;height:46px}
+.logo .w1{display:block;font:italic 800 17px/1 var(--display);color:var(--ink)}
+.logo .w2{display:block;font:italic 900 31px/0.95 var(--display);color:var(--red);letter-spacing:.5px}
+nav{margin-left:auto}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:6px}
+nav a{display:block;padding:10px 14px;text-decoration:none;font-weight:500;color:var(--ink);position:relative}
+nav a::after{content:"";position:absolute;left:14px;right:14px;bottom:2px;height:3px;background:var(--red);border-radius:2px;transform:scaleX(0);transition:transform .2s}
+nav a:hover::after,nav a.on::after{transform:scaleX(1)}
+nav a.on{color:var(--red);font-weight:700}
+.phone{display:flex;align-items:center;gap:10px;border:2px solid var(--red);border-radius:12px;padding:8px 16px;font:700 19px/1 var(--body);color:var(--ink);text-decoration:none;white-space:nowrap}
+.phone svg{width:20px;height:20px;fill:var(--red)}
+.menu-btn{display:none;margin-left:auto;background:none;border:0;padding:10px;cursor:pointer}
+.menu-btn span{display:block;width:26px;height:3px;background:var(--ink);margin:5px 0;border-radius:2px}
+
+/* Hero */
+.hero{position:relative;background:var(--ink);color:#fff;overflow:hidden}
+.hero .photo{position:absolute;inset:0 0 0 auto;width:62%;background:url(images/hero.jpg) center/cover no-repeat}
+.hero .photo::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--ink) 0%,rgba(20,26,33,.75) 28%,rgba(20,26,33,0) 60%)}
+.hero .slash{position:absolute;left:-40px;top:0;width:6px;height:140%;background:var(--red);transform:rotate(22deg);transform-origin:top left}
+.hero-in{position:relative;padding-block:72px 150px}
+.hero h1{color:#fff;font-style:italic;font-weight:900;font-size:clamp(38px,6vw,72px);max-width:13ch;letter-spacing:-.5px}
+.hero .rule{width:116px;height:5px;background:var(--red);border-radius:3px;margin:22px 0}
+.hero p{font-size:clamp(18px,2vw,23px);color:#d6dbe2;max-width:30ch;margin:0 0 30px}
+.ctas{display:flex;flex-wrap:wrap;gap:16px}
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;border-radius:12px;font:600 20px/1 var(--body);text-decoration:none;cursor:pointer;border:2px solid transparent;transition:background .15s,transform .15s}
+.btn svg{width:22px;height:22px}
+.btn-red{background:var(--red);color:#fff}
+.btn-red:hover{background:var(--red-dark)}
+.btn-ghost{border-color:#fff;color:#fff;background:transparent}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+/* Service cards */
+.cards{position:relative;margin-top:-100px;z-index:2}
+.grid6{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.svc{background:var(--card);border-radius:16px;box-shadow:0 10px 28px rgba(20,26,33,.12);padding:28px 12px 24px;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:14px;transition:transform .18s,box-shadow .18s}
+.svc:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(20,26,33,.18)}
+.svc svg{width:72px;height:64px}
+.svc b{font:700 22px/1.15 var(--body);color:var(--ink)}
+
+/* Benefits */
+.why{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding-block:56px}
+.perks{display:grid;grid-template-columns:repeat(3,1fr)}
+.perk{text-align:center;padding:4px 14px;border-left:1px solid var(--line)}
+.perk:first-child{border-left:0}
+.perk svg{width:52px;height:52px;margin-bottom:10px}
+.perk b{display:block;font:700 22px/1.15 var(--body);color:var(--ink)}
+.perk span{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.oil{aspect-ratio:3/1;max-width:100%;background:url(images/oil.jpg) center/cover;clip-path:polygon(9% 0,100% 0,100% 100%,0 100%);border-radius:0 18px 18px 0;position:relative}
+.oil::after{content:"";position:absolute;right:0;top:0;bottom:0;width:6px;background:var(--red)}
+
+/* Sections */
+section.s{padding-block:76px}
+.s.white{background:#fff}
+.eyebrow{font:700 14px/1 var(--body);letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.s h2{font-style:italic;font-weight:800;font-size:clamp(30px,4vw,44px);margin-bottom:14px}
+.lead{color:var(--muted);max-width:60ch;margin:0 0 40px;font-size:18px}
+
+.svc-list{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.item{background:var(--bg);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.item .ic{width:48px;height:48px;border-radius:12px;background:#fff;display:grid;place-items:center}
+.item .ic svg{width:32px;height:32px}
+.item h3{font:700 22px/1.2 var(--body)}
+.item p{margin:0;color:var(--muted)}
+.item ul{margin:4px 0 0;padding-left:18px;color:var(--text);font-size:16px}
+
+/* Price list */
+.prices{background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(20,26,33,.07);overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:16px 24px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:700 13px/1 var(--body);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+td.p{text-align:right;font-weight:700;color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+th:last-child{text-align:right}
+tr.grp td{background:#fff5f5;font-weight:700;color:var(--red-dark);font-size:15px;letter-spacing:.5px;text-transform:uppercase;padding-block:10px}
+tr:last-child td{border-bottom:0}
+.note{font-size:15px;color:var(--muted);margin-top:16px}
+
+/* About */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.about p{margin:0 0 16px;max-width:60ch}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}
+.stat{border-top:4px solid var(--red);padding-top:12px}
+.stat b{display:block;font:italic 900 38px/1 var(--display);color:var(--ink)}
+.stat span{font-size:15px;color:var(--muted)}
+.about-img{aspect-ratio:4/3;max-width:100%;border-radius:18px;background:url(images/radionica.jpg) center/cover;box-shadow:0 14px 34px rgba(20,26,33,.2)}
+
+/* Gallery */
+.gal{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:220px;gap:16px}
+.gal div{border-radius:14px;background-size:cover;background-position:center;min-width:0}
+.gal .a{grid-row:span 2;background-image:url(images/hero.jpg)}
+.gal .b{background-image:url(images/galerija-far.jpg)}
+.gal .c{background-image:url(images/oil.jpg)}
+.gal .d{grid-column:span 2;background-image:url(images/radionica.jpg)}
+
+/* Contact */
+.contact{display:grid;grid-template-columns:1fr 1.3fr;gap:40px}
+.info{background:var(--ink);color:#d6dbe2;border-radius:18px;padding:34px;display:flex;flex-direction:column;gap:22px}
+.info h3{color:#fff;font-style:italic;font-size:28px}
+.info .row{display:flex;gap:14px;align-items:flex-start}
+.info .row svg{width:24px;height:24px;flex-shrink:0;fill:var(--red);margin-top:2px}
+.info .row b{display:block;color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:1px}
+.big{font:800 28px/1.1 var(--display);color:#fff;user-select:all}
+.hours{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;font-variant-numeric:tabular-nums}
+.copy{align-self:flex-start;background:transparent;color:#fff;border:2px solid #5a6573;border-radius:10px;padding:8px 14px;font:600 15px var(--body);cursor:pointer}
+.copy:hover{border-color:#fff}
+form{background:#fff;border-radius:18px;padding:34px;box-shadow:0 6px 20px rgba(20,26,33,.07);display:grid;grid-template-columns:1fr 1fr;gap:18px}
+form h3{grid-column:1/-1;font-style:italic;font-size:28px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f.full{grid-column:1/-1}
+label{font-weight:600;font-size:15px;color:var(--ink)}
+input,select,textarea{font:inherit;font-size:16px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red);background:#fff}
+textarea{resize:vertical;min-height:90px}
+form .btn{grid-column:1/-1;justify-content:center}
+.done{grid-column:1/-1;background:#f0faf3;border:1.5px solid #9fd3ae;border-radius:12px;padding:18px}
+.done b{color:#16692f}
+.done pre{white-space:pre-wrap;font:15px/1.5 var(--body);background:#fff;border-radius:8px;padding:12px;margin:10px 0;border:1px solid var(--line)}
+.done button{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:10px 16px;font:600 15px var(--body);cursor:pointer}
+
+footer{background:var(--ink);color:#9aa4b1;padding-block:32px;font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between;align-items:center}
+footer b{color:#fff}
+
+/* Responsive */
+@media (max-width:1100px){
+  nav a{padding:10px 9px}
+  .grid6{grid-template-columns:repeat(3,1fr)}
+  .why{grid-template-columns:1fr}
+}
+@media (max-width:900px){
+  .menu-btn{display:block}
+  nav{position:absolute;left:0;right:0;top:100%;background:#fff;box-shadow:0 10px 20px rgba(0,0,0,.08);display:none;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+  nav.open{display:block}
+  nav ul{flex-direction:column;padding-block:8px}
+  nav a::after{display:none}
+  .bar .phone{display:none}
+  .hero .photo{width:100%;opacity:.45}
+  .svc-list,.about,.contact{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr 1fr;grid-auto-rows:170px}
+  .gal .a{grid-column:span 2;grid-row:span 1}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .hero-in{padding-block:48px 120px}
+  .grid6{grid-template-columns:repeat(2,1fr);gap:12px}
+  .svc svg{width:56px;height:50px}
+  .svc b{font-size:18px}
+  .perks{grid-template-columns:1fr;gap:20px}
+  .perk{border-left:0}
+  form{grid-template-columns:1fr;padding:24px}
+  .info{padding:26px}
+  .stats{grid-template-columns:1fr 1fr 1fr}
+  .stat b{font-size:28px}
+  .btn{font-size:18px;padding:14px 20px}
+}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 3.5 2.1-.8 1.3L11 13V7h2z"/></symbol>
+    <symbol id="s-oil" viewBox="0 0 80 64" fill="none" stroke="#141a21" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M14 22h40l18-6-12 22H24l-6-8H6v-8z"/><path d="M28 22v-8m-6 0h12"/><path d="M24 38v10h30l6-10"/><path d="M74 30c0 0 4 6 4 9a4 4 0 0 1-8 0c0-3 4-9 4-9z" fill="#e3191f" stroke="#e3191f" stroke-width="1"/></symbol>
+    <symbol id="s-diag" viewBox="0 0 80 64" fill="none" stroke="#141a21" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><rect x="14" y="8" width="52" height="36" rx="3"/><path d="M6 52h68l-4-8H10z"/><path d="M20 28h10l4-8 6 14 5-10 3 4h12" stroke="#e3191f"/></symbol>
+    <symbol id="s-brake" viewBox="0 0 80 64" fill="none" stroke="#141a21" stroke-width="4"><circle cx="38" cy="34" r="26"/><circle cx="38" cy="34" r="11"/><circle cx="38" cy="34" r="4" fill="#141a21"/><path d="M50 8a28 28 0 0 1 20 30l-10 2a20 20 0 0 0-14-24z" fill="#e3191f" stroke="#e3191f" stroke-linejoin="round"/></symbol>
+    <symbol id="s-susp" viewBox="0 0 80 64" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 56 26 46" stroke="#141a21"/><path d="M24 48 54 18" stroke="#e3191f" stroke-width="10"/><path d="M26 38l10 10M33 31l10 10M40 24l10 10M47 17l10 10" stroke="#141a21" stroke-width="3"/><circle cx="62" cy="10" r="6" stroke="#141a21"/><circle cx="12" cy="60" r="3" stroke="#141a21"/></symbol>
+    <symbol id="s-batt" viewBox="0 0 80 64" fill="none" stroke="#141a21" stroke-width="4" stroke-linejoin="round"><rect x="6" y="14" width="68" height="44" rx="3"/><path d="M16 14V8h10v6M54 14V8h10v6"/><path d="M42 24l-10 14h8l-4 12 12-16h-8l4-10z" fill="#e3191f" stroke="#e3191f" stroke-width="1.5"/></symbol>
+    <symbol id="s-snow" viewBox="0 0 80 64" fill="none" stroke="#141a21" stroke-width="5" stroke-linecap="round"><path d="M40 4v56M14 17l52 30M14 47l52-30"/><path d="M32 8l8 7 8-7M32 56l8-7 8 7M12 27l11-1-4-10M68 37l-11 1 4 10M12 37l11 1-4 10M68 27l-11-1 4-10" stroke-width="4"/></symbol>
+    <symbol id="p-shield" viewBox="0 0 52 52" fill="none" stroke="#e3191f" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M26 4 44 10v14c0 12-8 20-18 24C16 44 8 36 8 24V10z"/><path d="m17 26 6 6 12-12"/></symbol>
+    <symbol id="p-people" viewBox="0 0 52 52" fill="none" stroke="#e3191f" stroke-width="4" stroke-linecap="round"><circle cx="18" cy="16" r="7"/><circle cx="36" cy="16" r="7"/><path d="M4 42c0-8 6-13 14-13s14 5 14 13M30 30c2-1 4-1 6-1 7 0 12 5 12 13"/></symbol>
+    <symbol id="p-timer" viewBox="0 0 52 52" fill="none" stroke="#e3191f" stroke-width="4" stroke-linecap="round"><circle cx="26" cy="29" r="19"/><path d="M26 18v11l7 5M20 4h12M26 4v6M42 12l3-3"/></symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#pocetna" aria-label="Autoservis Volan, početna">
+      <svg viewBox="0 0 104 92" aria-hidden="true"><g fill="#141a21"><path d="M52 6a40 40 0 1 0 0 80 40 40 0 0 0 0-80zm0 14a26 26 0 0 1 25 19H63a12 12 0 0 0-22 0H27a26 26 0 0 1 25-19zm-24 32h14l6 10v12a26 26 0 0 1-20-22zm28 22V62l6-10h14a26 26 0 0 1-20 22z"/><rect x="46" y="0" width="12" height="12" rx="2"/><rect x="46" y="80" width="12" height="12" rx="2" transform="translate(0 0)"/><rect x="6" y="40" width="12" height="12" rx="2"/><rect x="86" y="40" width="12" height="12" rx="2"/><rect x="16" y="12" width="12" height="12" rx="2" transform="rotate(45 22 18)"/><rect x="76" y="12" width="12" height="12" rx="2" transform="rotate(45 82 18)"/><rect x="16" y="68" width="12" height="12" rx="2" transform="rotate(45 22 74)"/><rect x="76" y="68" width="12" height="12" rx="2" transform="rotate(45 82 74)"/></g><circle cx="52" cy="46" r="6" fill="#fff"/></svg>
+      <span><span class="w1">Autoservis</span><span class="w2">VOLAN</span></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Otvori meni" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav id="nav">
+      <ul>
+        <li><a href="#pocetna" class="on">Početna</a></li>
+        <li><a href="#usluge">Usluge</a></li>
+        <li><a href="#cenovnik">Cenovnik</a></li>
+        <li><a href="#o-nama">O nama</a></li>
+        <li><a href="#galerija">Galerija</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </nav>
+    <a class="phone" href="tel:+381621234567"><svg><use href="#i-phone"/></svg>062 123 45 67</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="pocetna">
+  <div class="photo" role="img" aria-label="Automobil u radionici"></div>
+  <div class="slash"></div>
+  <div class="wrap hero-in">
+    <h1>Vaš pouzdan autoservis u Novom Sadu</h1>
+    <div class="rule"></div>
+    <p>Dijagnostika, redovno održavanje i sve mehaničarske usluge na jednom mestu.</p>
+    <div class="ctas">
+      <a class="btn btn-red" href="#kontakt">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7 14h2M11 14h2M15 14h2M7 17h2M11 17h2" stroke-linecap="round"/></svg>
+        Zakaži termin <span aria-hidden="true">›</span>
+      </a>
+      <a class="btn btn-ghost" href="tel:+381621234567"><svg viewBox="0 0 24 24" fill="#fff"><use href="#i-phone"/></svg>Pozovi nas</a>
+    </div>
+  </div>
+</section>
+
+<div class="cards">
+  <div class="wrap grid6">
+    <a class="svc" href="#u-servis"><svg><use href="#s-oil"/></svg><b>Redovan<br>servis</b></a>
+    <a class="svc" href="#u-dijag"><svg><use href="#s-diag"/></svg><b>Dijagnostika</b></a>
+    <a class="svc" href="#u-kocnice"><svg><use href="#s-brake"/></svg><b>Kočioni<br>sistem</b></a>
+    <a class="svc" href="#u-trap"><svg><use href="#s-susp"/></svg><b>Vešanje<br>i trap</b></a>
+    <a class="svc" href="#u-elektrika"><svg><use href="#s-batt"/></svg><b>Elektrika</b></a>
+    <a class="svc" href="#u-klima"><svg><use href="#s-snow"/></svg><b>Klima<br>servis</b></a>
+  </div>
+</div>
+
+<div class="wrap why">
+  <div class="perks">
+    <div class="perk"><svg><use href="#p-shield"/></svg><b>Iskustvo<br>i stručnost</b><span>Školovani majstori i originalna oprema</span></div>
+    <div class="perk"><svg><use href="#p-people"/></svg><b>Pouzdan<br>partner</b><span>Cenu rada znate pre početka posla</span></div>
+    <div class="perk"><svg><use href="#p-timer"/></svg><b>Brzi<br>termini</b><span>Redovan servis najčešće isti dan</span></div>
+  </div>
+  <div class="oil" role="img" aria-label="Sipanje motornog ulja"></div>
+</div>
+
+<section class="s white" id="usluge">
+  <div class="wrap">
+    <div class="eyebrow">Usluge</div>
+    <h2>Sve što vašem vozilu treba</h2>
+    <p class="lead">Radimo putnička vozila i laka dostavna vozila svih marki, benzince, dizele i hibride.</p>
+    <div class="svc-list">
+      <div class="item" id="u-servis"><div class="ic"><svg><use href="#s-oil"/></svg></div><h3>Redovan servis</h3><p>Mali i veliki servis prema preporuci proizvođača.</p><ul><li>Zamena ulja i svih filtera</li><li>Zupčasti kaiš i vodena pumpa</li><li>Pregled pred tehnički</li></ul></div>
+      <div class="item" id="u-dijag"><div class="ic"><svg><use href="#s-diag"/></svg></div><h3>Dijagnostika</h3><p>Kompjutersko očitavanje grešaka i provera rada motora.</p><ul><li>Čitanje i brisanje grešaka (OBD)</li><li>Check engine lampica</li><li>Provera pre kupovine vozila</li></ul></div>
+      <div class="item" id="u-kocnice"><div class="ic"><svg><use href="#s-brake"/></svg></div><h3>Kočioni sistem</h3><p>Sigurno kočenje uz proveru celog sistema.</p><ul><li>Pločice, diskovi, doboši</li><li>Zamena kočione tečnosti</li><li>Ručna kočnica i ABS</li></ul></div>
+      <div class="item" id="u-trap"><div class="ic"><svg><use href="#s-susp"/></svg></div><h3>Vešanje i trap</h3><p>Otklanjamo lupkanje, vibracije i neravnomerno trošenje guma.</p><ul><li>Amortizeri i opruge</li><li>Spone, krajevi spona, ramena</li><li>Geometrija trapa</li></ul></div>
+      <div class="item" id="u-elektrika"><div class="ic"><svg><use href="#s-batt"/></svg></div><h3>Elektrika</h3><p>Pronalazimo kvarove u električnim instalacijama.</p><ul><li>Akumulator, alternator, anlaser</li><li>Svetla i sijalice</li><li>Senzori i instalacije</li></ul></div>
+      <div class="item" id="u-klima"><div class="ic"><svg><use href="#s-snow"/></svg></div><h3>Klima servis</h3><p>Hladan vazduh leti, bez neprijatnih mirisa.</p><ul><li>Punjenje freona</li><li>Provera curenja</li><li>Dezinfekcija i filter kabine</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="cenovnik">
+  <div class="wrap">
+    <div class="eyebrow">Cenovnik</div>
+    <h2>Okvirne cene rada</h2>
+    <p class="lead">Cene su za rad, bez delova i materijala. Tačnu cenu za vaše vozilo dobijate pre početka posla.</p>
+    <div class="prices">
+      <table>
+        <thead><tr><th>Usluga</th><th>Cena (din)</th></tr></thead>
+        <tbody>
+          <tr class="grp"><td colspan="2">Održavanje</td></tr>
+          <tr><td>Zamena ulja i filtera ulja</td><td class="p">od 2.000</td></tr>
+          <tr><td>Mali servis (ulje + svi filteri)</td><td class="p">od 3.500</td></tr>
+          <tr><td>Zamena zupčastog kaiša sa pumpom</td><td class="p">od 12.000</td></tr>
+          <tr class="grp"><td colspan="2">Dijagnostika i elektrika</td></tr>
+          <tr><td>Kompjuterska dijagnostika</td><td class="p">2.500</td></tr>
+          <tr><td>Provera akumulatora i punjenja</td><td class="p">besplatno</td></tr>
+          <tr class="grp"><td colspan="2">Kočnice i trap</td></tr>
+          <tr><td>Zamena prednjih pločica</td><td class="p">od 2.500</td></tr>
+          <tr><td>Zamena pločica i diskova (osovina)</td><td class="p">od 4.500</td></tr>
+          <tr><td>Geometrija trapa</td><td class="p">3.000</td></tr>
+          <tr class="grp"><td colspan="2">Klima</td></tr>
+          <tr><td>Punjenje klime (R134a)</td><td class="p">od 5.000</td></tr>
+          <tr><td>Dezinfekcija klime</td><td class="p">2.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Cene su informativne i važe uz PDV. Za vozila sa složenijim pristupom delovima cena može biti viša.</p>
+  </div>
+</section>
+
+<section class="s white" id="o-nama">
+  <div class="wrap about">
+    <div>
+      <div class="eyebrow">O nama</div>
+      <h2>Servis kome se vraćate</h2>
+      <p>Autoservis Volan je porodična radionica u Novom Sadu. Vozilo pregledamo, objasnimo vam šta je potrebno i tek onda radimo, uz vašu saglasnost.</p>
+      <p>Koristimo savremenu dijagnostičku opremu i delove proverenih proizvođača. Na urađen posao dajemo garanciju, a stare delove vam vraćamo na uvid.</p>
+      <div class="stats">
+        <div class="stat"><b>15+</b><span>godina rada</span></div>
+        <div class="stat"><b>4</b><span>radna mesta</span></div>
+        <div class="stat"><b>6 mes.</b><span>garancija na rad</span></div>
+      </div>
+    </div>
+    <div class="about-img" role="img" aria-label="Radionica sa dizalicama"></div>
+  </div>
+</section>
+
+<section class="s" id="galerija">
+  <div class="wrap">
+    <div class="eyebrow">Galerija</div>
+    <h2>Iz naše radionice</h2>
+    <p class="lead">Pogledajte prostor i opremu sa kojom radimo.</p>
+    <div class="gal">
+      <div class="a" role="img" aria-label="Automobil u servisu"></div>
+      <div class="b" role="img" aria-label="Far automobila"></div>
+      <div class="c" role="img" aria-label="Zamena ulja"></div>
+      <div class="d" role="img" aria-label="Dizalice u radionici"></div>
+    </div>
+  </div>
+</section>
+
+<section class="s white" id="kontakt">
+  <div class="wrap">
+    <div class="eyebrow">Kontakt</div>
+    <h2>Zakažite termin</h2>
+    <p class="lead">Pozovite nas ili popunite formular. Javićemo se sa predlogom termina.</p>
+    <div class="contact">
+      <div class="info">
+        <h3>Autoservis Volan</h3>
+        <div class="row"><svg><use href="#i-phone"/></svg><div><b>Telefon</b><span class="big" id="tel">062 123 45 67</span></div></div>
+        <button class="copy" id="copyTel" type="button">Kopiraj broj</button>
+        <div class="row"><svg><use href="#i-pin"/></svg><div><b>Adresa</b>Novi Sad</div></div>
+        <div class="row"><svg><use href="#i-clock"/></svg><div><b>Radno vreme</b>
+          <div class="hours"><span>Pon – Pet</span><span>08:00 – 17:00</span><span>Subota</span><span>08:00 – 14:00</span><span>Nedelja</span><span>ne radimo</span></div></div></div>
+      </div>
+      <form id="form" novalidate>
+        <h3>Zahtev za termin</h3>
+        <div class="f"><label for="ime">Ime i prezime</label><input id="ime" required autocomplete="name"></div>
+        <div class="f"><label for="telefon">Telefon</label><input id="telefon" type="tel" required autocomplete="tel" placeholder="06x xxx xx xx"></div>
+        <div class="f"><label for="vozilo">Vozilo (marka, model, godište)</label><input id="vozilo" placeholder="npr. Škoda Octavia 2017"></div>
+        <div class="f"><label for="usluga">Usluga</label>
+          <select id="usluga"><option>Redovan servis</option><option>Dijagnostika</option><option>Kočioni sistem</option><option>Vešanje i trap</option><option>Elektrika</option><option>Klima servis</option><option>Nešto drugo</option></select></div>
+        <div class="f"><label for="datum">Željeni datum</label><input id="datum" type="date"></div>
+        <div class="f"><label for="vreme">Deo dana</label><select id="vreme"><option>Pre podne</option><option>Posle podne</option><option>Svejedno</option></select></div>
+        <div class="f full"><label for="napomena">Opis problema</label><textarea id="napomena" placeholder="Šta ste primetili na vozilu?"></textarea></div>
+        <button class="btn btn-red" type="submit">Pošalji zahtev</button>
+        <div class="done" id="done" hidden></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Autoservis Volan</b> · Novi Sad</span>
+    <span>Tel: 062 123 45 67 · Pon–Pet 08–17, Sub 08–14</span>
+    <span>© 2026 Autoservis Volan</span>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav'),mb=document.getElementById('menuBtn');
+mb.addEventListener('click',()=>{const o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');mb.setAttribute('aria-expanded',false)}));
+
+const links=[...nav.querySelectorAll('a')];
+const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+function spy(){let i=0;secs.forEach((s,k)=>{if(s&&s.getBoundingClientRect().top<140)i=k});links.forEach((l,k)=>l.classList.toggle('on',k===i))}
+addEventListener('scroll',spy,{passive:true});spy();
+
+function copy(text,btn,label){
+  const ok=()=>{btn.textContent='Kopirano';setTimeout(()=>btn.textContent=label,1800)};
+  try{navigator.clipboard.writeText(text).then(ok,()=>btn.textContent='Označite tekst i kopirajte')}catch(e){btn.textContent='Označite tekst i kopirajte'}
+}
+document.getElementById('copyTel').addEventListener('click',e=>copy('0621234567',e.currentTarget,'Kopiraj broj'));
+
+const d=document.getElementById('datum');
+try{const t=new Date();t.setDate(t.getDate()+1);d.min=t.toISOString().slice(0,10)}catch(e){}
+
+document.getElementById('form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  const done=document.getElementById('done');
+  for(const id of ['ime','telefon']){const el=document.getElementById(id);if(!v(id)){el.focus();el.style.borderColor='var(--red)';return}el.style.borderColor=''}
+  const msg=`Zahtev za termin – Autoservis Volan
+Ime: ${v('ime')}
+Telefon: ${v('telefon')}
+Vozilo: ${v('vozilo')||'-'}
+Usluga: ${v('usluga')}
+Datum: ${v('datum')||'po dogovoru'}, ${v('vreme')}
+Opis: ${v('napomena')||'-'}`;
+  done.innerHTML='<b>Zahtev je spreman.</b> Kopirajte ga i pošaljite porukom (Viber ili SMS) na 062 123 45 67.<pre></pre><button type="button">Kopiraj poruku</button>';
+  done.querySelector('pre').textContent=msg;
+  const b=done.querySelector('button');b.addEventListener('click',()=>copy(msg,b,'Kopiraj poruku'));
+  done.hidden=false;
+});
+</script>
+</body>
+</html>
